@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      padding: 20px;
+      justify-content: center;
+      background: #f0f0f0;
+      position: relative;
+      overflow: hidden;
+    }
+    video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .image {
+      width: 150px;
+      height: auto;
+    }
+    .button {
+      background-color: rgb(88, 86, 217);
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      width: 200px;
+      padding: 12px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .button:hover {
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .email {
+      border: 1px solid #ccc;
+      width: 175px;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .email:hover {
+      box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+    }
+    .llll {
+      width: 25px;
+      background-color: white;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .text {
+      color: aliceblue;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .continue-button {
+      background-color: rgb(88, 86, 217);
+      cursor: pointer;
+      border: none;
+      border-radius: 20px;
+      width: 200px;
+      padding: 12px;
+      color: #fff;
+    }
+    .continue-button:hover {
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .another-login {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Video background -->
+  <video src="image/6474633-uhd_2160_25fps.mp4" autoplay loop muted></video>
+  
+  <!-- Nội dung đăng nhập -->
+  <h3><img src="xpi2.png" alt="Logo" class="image"></h3>
+  <h1>Đăng nhập hoặc tạo tài khoản</h1>
+  <p>Sử dụng một tài khoản để khám phá thế giới trên Xpi.com.</p>
+  
+  <button class="button">
+    <div class="text">
+      <img src="image/ok - Copy.webp" class="llll" alt="Google"> Đăng nhập bằng Google
+    </div>
+  </button>
+  
+  <p>hoặc</p>
+  <input type="text" placeholder="Email" class="email" id="emailInput">
+  <br><br>
+  <div>
+    <button class="continue-button" id="continueBtn">Tiếp tục</button>
+  </div>
+  <br>
+  <div class="another-login">Đăng nhập bằng cách khác</div>
+  <br>
+  <div>
+    <img src="image/logoApple-removebg-preview.png" alt="Apple" width="20px"> &nbsp;&nbsp;
+    <img src="image/logoFB.png" alt="Facebook" width="20px">
+  </div>
+  <br>
+  <div>
+    <p>
+      Bằng việc tiếp tục, bạn đã đọc và đồng ý với 
+      <a href="#">Điều khoản & Điều kiện, Tuyên bố bảo mật</a> của chúng tôi và 
+      <a href="#">Điều khoản & Điều kiện của Xpi.com Rewards</a>.
+    </p>
+  </div>
+
+  <!-- Script xử lý đăng nhập (gộp auth functions vào đây) -->
+  <script>
+    // Hàm mô phỏng đăng nhập
+    function fakeLogin(email) {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          if (email.indexOf('@') !== -1) {
+            var username = email.split('@')[0];
+            resolve({ email: email, username: username, token: "fake-jwt-token" });
+          } else {
+            reject("Email không hợp lệ.");
+          }
+        }, 1000);
+      });
+    }
+    
+    // Hàm lưu thông tin người dùng vào localStorage
+    function setUser(user) {
+      localStorage.setItem("token", user.token);
+      localStorage.setItem("username", user.username);
+    }
+    
+    // Hàm lấy thông tin người dùng từ localStorage
+    function getUser() {
+      return {
+        username: localStorage.getItem("username"),
+        token: localStorage.getItem("token")
+      };
+    }
+    
+    // Hàm đăng xuất
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+    }
+    
+    // Xử lý sự kiện khi bấm nút "Tiếp tục"
+    document.getElementById('continueBtn').addEventListener('click', function() {
+      var emailInput = document.getElementById('emailInput');
+      var email = emailInput.value.trim();
+      
+      if (!email) {
+        alert('Vui lòng nhập email');
+        return;
+      }
+      
+      var btn = document.getElementById('continueBtn');
+      btn.textContent = "Đang đăng nhập...";
+      
+      fakeLogin(email)
+        .then(function(response) {
+          alert("Đăng nhập thành công!");
+          setUser(response);
+          // Chuyển hướng sang trang chính (test3.html)
+          window.location.href = "test3.html";
+        })
+        .catch(function(error) {
+          alert("Đăng nhập thất bại: " + error);
+        })
+        .finally(function() {
+          btn.textContent = "Tiếp tục";
+        });
+    });
+  </script>
+</body>
+</html>
