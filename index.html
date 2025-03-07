@@ -1,85 +1,1451 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <title>Nguyễn Xong Phi</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test 3</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+
+    <!-- Litepicker CSS (Datepicker không dùng jQuery) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"
+    />
+
+    <style>
+      body {
+        /* Tùy chỉnh background theo ý bạn */
+        background-image: url("image/pic1.webp");
+        background-color: #cccccc;
+      }
+      .form-control::placeholder {
+        color: rgb(233, 222, 222) !important;
+        opacity: 1;
+      }
+      .form-control {
+        color: white !important;
+        caret-color: white;
+        background: transparent;
+      }
+      .form-control:focus {
+  background: rgba(0, 0, 0, 0.3) !important; /* Nền tối nhẹ */
+  outline: none;                             /* Bỏ khung mặc định (tùy chọn) */
+}
+      /* Cho popup lịch vị trí chính xác */
+      .calendar-popup {
+        display: none;
+        top: 110%;
+        left: 0;
+        z-index: 1000;
+        width: 300px;
+      }
+       /* ===========================
+       CUSTOM ARROWS (Trắng tròn)
+       =========================== */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: #fff;       /* Nền trắng */
+      border-radius: 50%;           /* Bo tròn nút */
+      width: 40px;                  /* Kích thước nút */
+      height: 40px;
+      background-size: 15px 15px;   /* Kích thước icon mũi tên */
+      background-position: center center;
+      background-repeat: no-repeat;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Bóng cho nút */
+    }
+
+    /* Mũi tên trái */
+    .carousel-control-prev-icon {
+      background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M4.354 1.146a.5.5 0 0 1 0 .708L2.207 4l2.147 2.146a.5.5 0 0 1-.708.708l-2.5-2.5a.5.5 0 0 1 0-.708l2.5-2.5a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+    }
+    /* Mũi tên phải */
+    .carousel-control-next-icon {
+      background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M3.646 1.146a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L5.793 4 3.646 1.854a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    }
+
+    /* Hover: thay đổi màu nền, nếu muốn */
+    .carousel-control-prev:hover .carousel-control-prev-icon,
+    .carousel-control-next:hover .carousel-control-next-icon {
+      background-color: #f1f1f1;
+    }
+
+    /* Chỉnh vị trí các nút Prev/Next ra hai bên */
+    .carousel-control-prev,
+    .carousel-control-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5%;           /* Độ rộng vùng click, có thể tùy chỉnh */
+    }
+    .carousel-control-prev {
+      left: -2rem;         /* Đẩy nút Prev sang bên trái */
+    }
+    .carousel-control-next {
+      right: -2rem;        /* Đẩy nút Next sang bên phải */
+    }
+
+    /* Một chút style cho card */
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+     /* 2) Cho ảnh card cố định chiều cao */
+     .card-img-top {
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* 3) Gán animation nhấp nhô cho mọi thẻ có class .wave-card */
+    .wave-card {
+      animation: wave-floating 2s ease-in-out infinite;
+      /* Thêm transition để hover mượt hơn */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* 4) Khi hover, tạm dừng animation + phóng to nhẹ + bóng đổ */
+    .wave-card:hover {
+      animation-play-state: paused;       /* Dừng animation tại khung hiện tại */
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .feature-icon {
+      width: 60px; /* Chiều rộng icon */
+      height: auto; 
+      margin-bottom: 15px;
+    }
+    /* Khối chung cho tất cả: Bungalow, Biệt thự, Chalet, Nhà, Khu cắm trại & thuyền, Căn hộ */
+    .bg-block {
+      min-height: 200px;
+      border-radius: 0.5rem;
+      position: relative;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;  /* Giúp ảnh phủ đầy khối */
+      overflow: hidden;
+      display: flex;
+      align-items: center;     /* Căn giữa dọc */
+      justify-content: center; /* Căn giữa ngang */
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    /* Overlay mờ dần dưới đáy để chữ trắng nổi bật */
+    .bg-block::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0));
+      opacity: 0.7;
+      z-index: 1;
+    }
+    /* Text trên ảnh */
+    .bg-block h4 {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    /* Hover nổi nhẹ */
+    .bg-block:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+     /* --- Nút Prev/Next bo tròn, nền trắng, canh giữa mũi tên --- */
+     .carousel-control-prev,
+    .carousel-control-next {
+      width: 50px;
+      height: 50px;
+      background-color: #fff; /* Nền trắng */
+      border-radius: 50%;
+      opacity: 0.9;           /* Mức độ trong suốt */
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+      opacity: 1;
+    }
+    .carousel-control-prev {
+      left: 20px; /* Canh lề trái */
+    }
+    .carousel-control-next {
+      right: 20px; /* Canh lề phải */
+    }
+
+    /* Ẩn mũi tên mặc định của Bootstrap, dùng custom arrow */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-image: none; /* Xoá arrow mặc định */
+      display: flex;          
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    /* Mũi tên trái (prev) */
+    .carousel-control-prev-icon::after {
+      content: '‹';
+      font-size: 24px;  
+      color: black;     
+    }
+    /* Mũi tên phải (next) */
+    .carousel-control-next-icon::after {
+      content: '›';
+      font-size: 24px;
+      color: black;
+    }
+    .nav-item .btn a {
+  text-decoration: none !important; /* Ẩn gạch chân */
+  color: inherit !important;         /* Kế thừa màu từ nút cha */
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container text-center">
+      <!-- Thanh trên -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
-          <!-- Brand bên trái -->
           <a class="navbar-brand" href="#">Booking.com</a>
-          <!-- Nút toggle cho màn hình nhỏ -->
           <button
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#topNavbar"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon" ></span>
           </button>
-    
-          <!-- Nội dung thanh trên -->
           <div class="collapse navbar-collapse" id="topNavbar">
-            <ul class="navbar-nav ms-auto"> 
-              <!-- ms-auto để dàn menu về bên phải -->
+            <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi"></i> VN
-                </a>
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-globe"></i> VN</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">USD</a>
+                <a class="nav-link text-white" href="#">USD</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Trợ giúp</a>
+                <a class="nav-link text-white" href="#">Trợ giúp</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Đăng chỗ nghỉ của Quý vị</a>
+                <a class="nav-link text-white" href="#"
+                  >Đăng chỗ nghỉ của Quý vị</a
+                >
               </li>
-              <li class="nav-item">
-                <button class="btn btn-outline-light me-2">Đăng ký</button>
+              <li class="nav-item" id="loginSignupContainer">
+                <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#signupModal">Đăng ký</button>
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</button>
               </li>
-              <li class="nav-item">
-                <button class="btn btn-light">Đăng nhập</button>
+              <li class="nav-item" id="userGreetingContainer" style="display: none;">
+                <span id="userGreeting" class="nav-link"></span>
               </li>
+              <li class="nav-item" id="logoutContainer" style="display: none;">
+                <button id="logoutBtn" class="btn btn-outline-danger me-2">Đăng xuất</button>
+              </li>
+              
             </ul>
           </div>
         </div>
       </nav>
-    <!--  -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+      <!-- Thanh dưới -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#bottomNavbar"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <div class="collapse navbar-collapse" id="bottomNavbar">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Lưu trú</a>
-                  </li>
-                  <li class="nav-item me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-airplane"></i> Chuyến bay</a>
-                  </li>
-                  <li class="nav-item me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-suitcase"></i> Chuyến bay + Khách sạn</a>
-                  </li>
-                  <li class="nav-item me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-car-front"></i> Thuê xe</a>
-                  </li>
-                  <li class="nav- me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-geo-alt"></i> Địa điểm tham quan</a>
-                  </li>
-                  <li class="nav-item me-4">
-                    <a class="nav-link" href="#"><i class="bi bi-taxi-front"></i> Taxi sân bay</a>
-                  </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-house-door"></i> Lưu trú</a
+                >
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-airplane"></i> Chuyến bay</a
+                >
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-suitcase"></i> Chuyến bay + Khách sạn</a
+                >
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-car-front"></i> Thuê xe</a
+                >
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-geo-alt"></i> Địa điểm tham quan</a
+                >
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link text-white" href="#"
+                  ><i class="bi bi-taxi-front"></i> Taxi sân bay</a
+                >
+              </li>
             </ul>
           </div>
         </div>
       </nav>
-</body>
+
+      <br /><br />
+      <h1 style="color: aliceblue;">BẠN MUỐN ĐI ĐÂU?</h1>
+      <br />
+
+      <!-- Form tìm kiếm -->
+      <div
+        class="row g-2 align-items-center border border-light rounded-3 p-2 position-relative"
+      >
+        <!-- Ô nhập địa điểm -->
+        <div class="col-4 position-relative">
+          <i
+            class="bi bi-geo-alt position-absolute top-50 start-0 translate-middle-y ms-3 text-white"
+          ></i>
+          <input
+            type="text"
+            id="locationInput"
+            class="form-control ps-5 border-white custom-focus py-2"
+            placeholder="Bạn muốn đến đâu?"
+          />
+          <div
+            id="suggestions"
+            class="position-absolute w-100 mt-1 d-none shadow-lg rounded-3"
+            style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);"
+          >
+            <div class="p-2 fw-bold text-secondary">
+              Địa điểm được yêu thích gần đây
+            </div>
+            <ul class="list-group list-unstyled"></ul>
+          </div>
+        </div>
+
+        <!-- Ô nhập ngày nhận/trả phòng -->
+        <div class="col-4 position-relative">
+          <i
+            class="bi bi-calendar position-absolute top-50 start-0 translate-middle-y ms-3 text-white"
+          ></i>
+          <input
+            type="text"
+            id="datePicker"
+            class="form-control ps-5 border-white custom-focus py-2"
+            placeholder="Ngày nhận phòng - Ngày trả phòng"
+            readonly
+          />
+          <!-- Popup lịch dùng Litepicker -->
+          <div
+            class="calendar-popup position-absolute bg-white p-3 rounded shadow"
+            id="calendarPopup"
+          >
+            <!-- Đây là container Litepicker (render inline) -->
+            <div id="calendar"></div>
+          </div>
+        </div>
+
+        <!-- Ô chọn số lượng khách/phòng -->
+        <div class="col-3 position-relative">
+          <i
+            class="bi bi-people position-absolute top-50 start-0 translate-middle-y ms-3 text-white"
+          ></i>
+          <input
+            type="text"
+            id="guestInput"
+            class="form-control ps-5 border-white custom-focus py-2"
+            placeholder="2 người lớn - 0 trẻ em - 1 phòng"
+          />
+          <div
+            id="guestDropdown"
+            class="position-absolute bg-white p-3 rounded shadow d-none"
+            style="top: 110%; left: 0; width: 100%; z-index: 1000;"
+          >
+            <div
+              class="d-flex justify-content-between align-items-center mb-2"
+            >
+              <span>Người lớn</span>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary minus-adult">
+                  -
+                </button>
+                <span class="mx-2" id="numAdults">2</span>
+                <button class="btn btn-sm btn-outline-secondary plus-adult">
+                  +
+                </button>
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-between align-items-center mb-2"
+            >
+              <span>Trẻ em</span>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary minus-child">
+                  -
+                </button>
+                <span class="mx-2" id="numChildren">0</span>
+                <button class="btn btn-sm btn-outline-secondary plus-child">
+                  +
+                </button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Phòng</span>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary minus-room">
+                  -
+                </button>
+                <span class="mx-2" id="numRooms">1</span>
+                <button class="btn btn-sm btn-outline-secondary plus-room">
+                  +
+                </button>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100 mt-3 apply-guests">
+              Xác nhận
+            </button>
+          </div>
+        </div>
+
+        <!-- Nút tìm kiếm -->
+        <div
+          class="col-1 d-flex align-items-center justify-content-center"
+        >
+          <button class="btn btn-primary px-3 py-2">Tìm</button>
+        </div>
+      </div>
+      <br>
+      
+  
+    </div>
+    <div class="container my-5">
+      <h2 class="mb-4" style="color: #ffff;">
+        Nhà được khách yêu thích
+        <button id="editBtn" class="btn btn-warning btn-sm" style="display: none;">
+          Edit
+        </button>
+      </h2>
+  
+      <!-- Carousel -->
+      <div id="homestayCarousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel-inner (chứa các slide) -->
+        <div class="carousel-inner" id="carousel-inner-homestay">
+          <!-- Các slide (.carousel-item) sẽ được tạo động bằng JS -->
+        </div>
+  
+        <!-- Nút Prev -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#homestayCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+  
+        <!-- Nút Next -->
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#homestayCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  
+    <div class="container my-5">
+      <h2 class="mb-4" style="color: #ffff;">Cảm giác như ở nhà dù bạn đi đến đâu</h2>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
+        
+        <!-- Thẻ 1 -->
+        <div class="col">
+          <div class="card wave-card h-100">
+            <img 
+              src="https://picsum.photos/id/1011/300/200" 
+              class="card-img-top" 
+              alt="Tây Ban Nha"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Tây Ban Nha</h5>
+              <p class="card-text">166.514 nhà nghỉ dưỡng</p>
+              <button class="btn btn-primary">Khám phá</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Thẻ 2 -->
+        <div class="col">
+          <div class="card wave-card h-100">
+            <img 
+              src="https://picsum.photos/id/1015/300/200" 
+              class="card-img-top" 
+              alt="Ý"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Ý</h5>
+              <p class="card-text">179.454 nhà nghỉ dưỡng</p>
+              <button class="btn btn-primary">Khám phá</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Thẻ 3 -->
+        <div class="col">
+          <div class="card wave-card h-100">
+            <img 
+              src="https://picsum.photos/id/1016/300/200" 
+              class="card-img-top" 
+              alt="Pháp"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Pháp</h5>
+              <p class="card-text">181.734 nhà nghỉ dưỡng</p>
+              <button class="btn btn-primary">Khám phá</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Thẻ 4 -->
+        <div class="col">
+          <div class="card wave-card h-100">
+            <img 
+              src="https://picsum.photos/id/1018/300/200" 
+              class="card-img-top" 
+              alt="Hy Lạp"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Hy Lạp</h5>
+              <p class="card-text">60.560 nhà nghỉ dưỡng</p>
+              <button class="btn btn-primary">Khám phá</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Thẻ 5 -->
+        <div class="col">
+          <div class="card wave-card h-100">
+            <img 
+              src="https://picsum.photos/id/1021/300/200" 
+              class="card-img-top" 
+              alt="Thụy Sỹ"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Thụy Sỹ</h5>
+              <p class="card-text">14.211 nhà nghỉ dưỡng</p>
+              <button class="btn btn-primary">Khám phá</button>
+            </div>
+          </div>
+        </div>
+    
+      </div>
+    </div>
+    <div class="container my-5">
+      <h2 class="mb-4" style="color: #fff;">Đặt dễ dàng</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-3">
+        
+        <!-- Thẻ 1 -->
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <!-- Icon minh họa (thay link icon thật) -->
+              <img 
+                src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" 
+                alt="Không ẩn phí" 
+                class="feature-icon"
+              />
+              <h5 class="card-title">Không ẩn phí</h5>
+              <p class="card-text">
+                Giá bạn thấy chính là giá bạn trả
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Thẻ 2 -->
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <!-- Icon minh họa (thay link icon thật) -->
+              <img 
+                src="https://cdn-icons-png.flaticon.com/512/3566/3566245.png" 
+                alt="Xác nhận tức thì" 
+                class="feature-icon"
+              />
+              <h5 class="card-title">Xác nhận tức thì</h5>
+              <p class="card-text">
+                Phần lớn chỗ nghỉ có thể đặt tức thì
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Thẻ 3 -->
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <!-- Icon minh họa (thay link icon thật) -->
+              <img 
+                src="https://cdn-icons-png.flaticon.com/512/3566/3566323.png" 
+                alt="Linh hoạt" 
+                class="feature-icon"
+              />
+              <h5 class="card-title">Linh hoạt</h5>
+              <p class="card-text">
+                Nhiều chỗ nghỉ cho khách hủy miễn phí
+              </p>
+            </div>
+          </div>
+        </div>
+    
+      </div> <!-- row -->
+    </div> <!-- container -->
+    <div class="container my-5">
+      <h2 class="mb-4 text-white">Nhà nghỉ dưỡng cho muôn kiểu vi vu</h2>
+      
+      <!-- Hàng đầu: 3 cột -->
+      <div class="row g-3 mb-3">
+        <!-- Bungalow -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="bg-block" style="background-image: url('image/bugalo.jpg');">
+            <h4>Bungalow</h4>
+          </div>
+        </div>
+    
+        <!-- Biệt thự -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="bg-block" style="background-image: url('image/hinh-anh-biet-thu-dep-1.jpg');">
+            <h4>Biệt thự</h4>
+          </div>
+        </div>
+    
+        <!-- Khu cắm trại & thuyền -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="bg-block" style="background-image: url('image/camTraiThuyen.png');">
+            <h4>Khu cắm trại &amp; thuyền</h4>
+          </div>
+        </div>
+      </div> <!-- row 1 -->
+      
+      <!-- Hàng 2: 3 cột -->
+      <div class="row g-3">
+        <!-- Căn hộ -->
+        <div class="col-12 col-md-4">
+          <div class="bg-block" style="background-image: url('image/canHo.webp');">
+            <h4>Căn hộ</h4>
+          </div>
+        </div>
+    
+        <!-- Chalet -->
+        <div class="col-12 col-md-4">
+          <div class="bg-block" style="background-image: url('image/nha-go-dep-anh-bia.jpg');">
+            <h4>Chalet</h4>
+          </div>
+        </div>
+    
+        <!-- Nhà -->
+        <div class="col-12 col-md-4">
+          <div class="bg-block" style="background-image: url('image/nhaDep.jpg');">
+            <h4>Nhà</h4>
+          </div>
+        </div>
+      </div> <!-- row 2 -->
+    
+    </div> <!-- container -->
+    
+    <div class="container my-5">
+      <h2 class="mb-2"  style="color: #ffff;">Để đi chơi cuối tuần hoặc cả tuần</h2>
+    <br>
+      <!-- Carousel -->
+      <div id="weekendCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner" id="carousel-inner-weekend">
+          <!-- JS sẽ thêm các .carousel-item ở đây -->
+        </div>
+    
+        <!-- Nút Prev -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#weekendCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+    
+        <!-- Nút Next -->
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#weekendCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    <div class="container my-5">
+      <h2 class="mb-4" style="color: #ffff;">Làm sao tôi có thể tìm kiếm những chỗ nghỉ này?</h2>
+    
+      <div class="accordion" id="faqAccordion">
+        <!-- Mục 1 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="false"
+              aria-controls="collapseOne"
+            >
+              Nhận chìa khóa
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingOne"
+            data-bs-parent="#faqAccordion"
+          >
+            <div class="accordion-body">
+              Bạn có thể liên lạc trực tiếp với chủ chỗ nghỉ để được hướng dẫn cách nhận chìa khóa. Dù là gặp mặt trực tiếp hay nhận chìa qua hộp thư, cách nào cũng dễ dàng để bạn có thể mở khóa vào chỗ nghỉ và bắt đầu tận hưởng kỳ nghỉ của mình!.
+            </div>
+          </div>
+        </div>
+    
+        <!-- Mục 2 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              Trao đổi với chủ chỗ nghỉ
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#faqAccordion"
+          >
+            <div class="accordion-body">
+              Bạn luôn có thể liên lạc chủ chỗ nghỉ và hỏi bất cứ câu hỏi nào liên quan đến chuyến đi của mình. Có lẽ, bạn muốn họ biết khi nào bạn đến hoặc nếu bạn có một yêu cầu đặc biệt nào đó – hãy luôn thoải mái trao đổi với chủ chỗ nghỉ nhé!
+            </div>
+          </div>
+        </div>
+    
+        <!-- Mục 3 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              Nhận chỗ nghỉ
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingThree"
+            data-bs-parent="#faqAccordion"
+          >
+            <div class="accordion-body">
+              Nếu trước đây bạn chỉ luôn nghỉ ở khách sạn và không chắc về cách "nhận phòng" ở một căn hộ hay nhà nghỉ dưỡng thì đừng lo nhé. Nhiều khách khác cũng có những lo lắng tương tự. Chính vì thế chủ chỗ nghỉ cung cấp tất cả các thông tin bạn cần để đến và tận hưởng kỳ nghỉ của mình.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+<footer class="bg-light text-dark pt-4">
+  <div class="container">
+    <!-- Nút đăng chỗ nghỉ -->
+    <div class="row">
+      <div class="col text-center mb-3">
+        <button class="btn btn-primary">Đăng chỗ nghỉ của Quý vị</button>
+      </div>
+    </div>
+
+    <!-- Các cột liên kết -->
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 mb-4">
+      <!-- Cột 1 -->
+      <div class="col">
+        <h6 class="fw-bold">Phần nổi bật</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-dark">Chợ cuối tuần</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Thành phố</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Quận</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Sân bay</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Khách sạn</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Địa điểm tham quan</a></li>
+        </ul>
+      </div>
+      <!-- Cột 2 -->
+      <div class="col">
+        <h6 class="fw-bold">Tìm kiếm chỗ nghỉ theo</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-dark">Giá rẻ</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Khuyến mãi</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Nhà &amp; chung cư</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Căn hộ dịch vụ</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Resort</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Biệt thự</a></li>
+        </ul>
+      </div>
+      <!-- Cột 3 -->
+      <div class="col">
+        <h6 class="fw-bold">Bài viết liên quan</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-dark">12 địa điểm đẹp</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Kinh nghiệm du lịch</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Đi đâu làm gì</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Khám phá ẩm thực</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Travel Review Awards</a></li>
+        </ul>
+      </div>
+      <!-- Cột 4 -->
+      <div class="col">
+        <h6 class="fw-bold">Dịch vụ &amp; Hỗ trợ</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-dark">Trung tâm trợ giúp</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Liên hệ</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Điều khoản</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Chính sách bảo mật</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Hỗ trợ khách hàng</a></li>
+        </ul>
+      </div>
+      <!-- Cột 5 -->
+      <div class="col">
+        <h6 class="fw-bold">Booking.com for Business</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-dark">Trang dành cho nhà cung cấp</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Trở thành đối tác phân phối</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Quản lý đặt chỗ</a></li>
+          <li><a href="#" class="text-decoration-none text-dark">Hướng dẫn sử dụng</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Phần ghi bản quyền và logo -->
+    <div class="row">
+      <div class="col text-center">
+        <p class="mb-1">© 1996–2023 Booking.com™. Bảo lưu mọi quyền.</p>
+        <p class="mb-3">
+          Booking.com là một phần của Booking Holdings Inc., tập đoàn đứng đầu thế giới về du lịch trực tuyến và các dịch vụ liên quan.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Modal Đăng nhập -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Đăng nhập</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com" required>
+          </div>
+          <!-- Mật khẩu -->
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Mật khẩu</label>
+            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+          </div>
+          <!-- Checkbox Ghi nhớ -->
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Ghi nhớ tôi</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <p class="m-0">
+          Chưa có tài khoản?
+          <a href="#" class="text-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#signupModal">Đăng ký</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Đăng ký -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModalLabel">Đăng ký</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <form id="signupForm">
+          <!-- Họ tên -->
+          <div class="mb-3">
+            <label for="signupName" class="form-label">Họ tên</label>
+            <input type="text" class="form-control" id="signupName" placeholder="Nguyễn Văn A" required>
+          </div>
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="signupEmail" placeholder="name@example.com" required>
+          </div>
+          <!-- Mật khẩu -->
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label">Mật khẩu</label>
+            <input type="password" class="form-control" id="signupPassword" placeholder="••••••••" required>
+          </div>
+          <!-- Xác nhận mật khẩu -->
+          <div class="mb-3">
+            <label for="signupConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+            <input type="password" class="form-control" id="signupConfirmPassword" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <p class="m-0">
+          Đã có tài khoản?
+          <a href="#" class="text-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Admin (ẩn mặc định) -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adminModalLabel">Quản lý "Nhà được khách yêu thích"</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form thêm item -->
+        <form id="addItemForm">
+          <div class="mb-3">
+            <label for="itemName" class="form-label">Tên</label>
+            <input type="text" class="form-control" id="itemName" placeholder="VD: Ogden">
+          </div>
+          <div class="mb-3">
+            <label for="itemLocation" class="form-label">Vị trí</label>
+            <input type="text" class="form-control" id="itemLocation" placeholder="VD: Mỹ">
+          </div>
+          <div class="mb-3">
+            <label for="itemPrice" class="form-label">Giá từ</label>
+            <input type="number" class="form-control" id="itemPrice" placeholder="VD: 99">
+          </div>
+          <div class="mb-3">
+            <label for="itemImage" class="form-label">URL Ảnh</label>
+            <input type="text" class="form-control" id="itemImage" placeholder="http://...">
+          </div>
+          <button type="submit" class="btn btn-primary">Thêm mới</button>
+        </form>
+        
+        <hr>
+        <!-- Danh sách item (API) -->
+        <h5>Danh sách item:</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tên</th>
+              <th>Vị trí</th>
+              <th>Giá</th>
+              <th>Ảnh</th>
+              <th>Xóa</th>
+            </tr>
+          </thead>
+          <tbody id="adminItemList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- jQuery (dành cho các chức năng khác) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 5 JS (bundle gồm Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Litepicker JS -->
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+
+    <script>
+    /* =========================
+   Utility Functions
+========================= */
+
+// Hàm định dạng ngày theo dd/mm/yyyy
+function formatDate(date) {
+  if (!date) return "";
+  const d = new Date(date);
+  const day = ("0" + d.getDate()).slice(-2);
+  const month = ("0" + (d.getMonth() + 1)).slice(-2);
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Hàm chia mảng thành các nhóm kích thước size
+function chunkArray(array, size) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
+// Hàm xóa item (được khai báo ngoài document.ready để gọi từ HTML)
+function deleteItem(id) {
+  if (confirm("Xóa item ID = " + id + "?")) {
+    $.ajax({
+      url: 'https://67c9ea3a102d684575c3f11e.mockapi.io/touris/' + id,
+      type: 'DELETE',
+      success: function() {
+        alert("Xóa thành công!");
+        // Tải lại danh sách bằng cách kích hoạt nút Edit
+        $('#editBtn').click();
+      },
+      error: function(err) {
+        alert("Lỗi xóa: " + err);
+      }
+    });
+  }
+}
+
+/* =========================
+   Document Ready
+========================= */
+$(document).ready(function () {
+  /* ---------- Location Suggestions ---------- */
+  const locations = [
+    "Đà Lạt",
+    "Vũng Tàu",
+    "TP. Hồ Chí Minh",
+    "Đà Nẵng",
+    "Hà Nội",
+  ];
+
+  function renderSuggestions(filtered) {
+    const suggestionBox = $("#suggestions ul");
+    suggestionBox.empty();
+    filtered.forEach((loc) => {
+      suggestionBox.append(`
+        <li class="p-2 d-flex align-items-center border-bottom list-group-item-action" style="cursor: pointer;">
+          <i class="bi bi-geo-alt me-2"></i> ${loc}
+        </li>
+      `);
+    });
+    $("#suggestions").removeClass("d-none");
+  }
+
+  $("#locationInput").on("focus input", function () {
+    const inputVal = $(this).val().toLowerCase();
+    const filtered = locations.filter((loc) =>
+      loc.toLowerCase().includes(inputVal)
+    );
+    renderSuggestions(filtered.length ? filtered : locations);
+  });
+
+  $(document).on("click", "#suggestions li", function () {
+    $("#locationInput").val($(this).text().trim());
+    $("#suggestions").addClass("d-none");
+  });
+
+  $(document).click(function (e) {
+    if (!$(e.target).closest("#locationInput, #suggestions").length) {
+      $("#suggestions").addClass("d-none");
+    }
+  });
+
+  /* ---------- Guest Dropdown ---------- */
+  $("#guestInput").on("click", function (e) {
+    e.stopPropagation();
+    $("#guestDropdown").toggleClass("d-none");
+  });
+
+  $(".plus-adult").on("click", function () {
+    let count = parseInt($("#numAdults").text());
+    $("#numAdults").text(count + 1);
+  });
+  $(".minus-adult").on("click", function () {
+    let count = parseInt($("#numAdults").text());
+    if (count > 1) {
+      $("#numAdults").text(count - 1);
+    }
+  });
+
+  $(".plus-child").on("click", function () {
+    let count = parseInt($("#numChildren").text());
+    $("#numChildren").text(count + 1);
+  });
+  $(".minus-child").on("click", function () {
+    let count = parseInt($("#numChildren").text());
+    if (count > 0) {
+      $("#numChildren").text(count - 1);
+    }
+  });
+
+  $(".plus-room").on("click", function () {
+    let count = parseInt($("#numRooms").text());
+    $("#numRooms").text(count + 1);
+  });
+  $(".minus-room").on("click", function () {
+    let count = parseInt($("#numRooms").text());
+    if (count > 1) {
+      $("#numRooms").text(count - 1);
+    }
+  });
+
+  $(".apply-guests").on("click", function () {
+    const adults = $("#numAdults").text();
+    const children = $("#numChildren").text();
+    const rooms = $("#numRooms").text();
+    $("#guestInput").val(`${adults} người lớn - ${children} trẻ em - ${rooms} phòng`);
+    $("#guestDropdown").addClass("d-none");
+  });
+
+  $(document).click(function (e) {
+    if (!$(e.target).closest("#guestInput, #guestDropdown").length) {
+      $("#guestDropdown").addClass("d-none");
+    }
+  });
+
+  /* ---------- Date Range Picker với Litepicker ---------- */
+  let selectedStart = null,
+      selectedEnd = null;
+
+  const picker = new Litepicker({
+    element: document.getElementById("calendar"),
+    inlineMode: true,
+    singleMode: false, // Cho phép chọn khoảng ngày
+    format: "DD/MM/YYYY",
+    autoApply: false,  // Tự xử lý nút "Chọn"
+    showButtons: false, // Ẩn nút Cancel/Apply mặc định
+    setup: (picker) => {
+      picker.on("selected", (date1, date2) => {
+        selectedStart = date1;
+        selectedEnd = date2;
+        console.log("Ngày bắt đầu:", date1, "Ngày kết thúc:", date2);
+      });
+    },
+  });
+
+  $("#datePicker").on("click", function (e) {
+    e.stopPropagation();
+    $("#calendarPopup").toggle();
+  });
+
+  $("#clearDates").on("click", function () {
+    selectedStart = null;
+    selectedEnd = null;
+    $("#datePicker").val("");
+    picker.clearSelection();
+  });
+
+  $("#confirmDates").on("click", function () {
+    if (selectedStart && selectedEnd) {
+      $("#datePicker").val(formatDate(selectedStart) + " - " + formatDate(selectedEnd));
+      $("#calendarPopup").hide();
+    } else {
+      alert("Vui lòng chọn ngày nhận và trả phòng.");
+    }
+  });
+
+  $(document).click(function (e) {
+    if (!$(e.target).closest("#calendarPopup, #datePicker").length) {
+      $("#calendarPopup").hide();
+    }
+  });
+
+  /* ---------- Carousel: Homestay ---------- */
+  const apiUrl = "https://67c9ea3a102d684575c3f11e.mockapi.io/touris";
+
+  $.ajax({
+    url: apiUrl,
+    method: "GET",
+    success: function(data) {
+      const chunkedData = chunkArray(data, 4);
+      renderCarouselItems(chunkedData);
+    },
+    error: function(err) {
+      console.error("Lỗi:", err);
+    }
+  });
+
+  function renderCarouselItems(chunkedData) {
+    const $carouselInner = $("#carousel-inner-homestay");
+    $carouselInner.empty();
+
+    chunkedData.forEach((group, index) => {
+      const isActive = index === 0 ? "active" : "";
+      let slideHtml = `
+        <div class="carousel-item ${isActive}">
+          <div class="row justify-content-center">
+      `;
+
+      group.forEach(item => {
+        slideHtml += `
+          <div class="col-md-3">
+            <div class="card mb-4">
+              <img src="${item.image}" class="card-img-top" alt="${item.name}" />
+              <div class="card-body">
+                <h5 class="card-title">${item.name}</h5>
+                <p class="card-text">
+                  <strong>Vị trí:</strong> ${item.location}<br/>
+                  <strong>Giá từ:</strong> $${item.price}<br/>
+                  <strong>Đánh giá:</strong> ${item.rating}
+                </p>
+                <a href="#" class="btn btn-primary">Xem chi tiết</a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      slideHtml += `
+          </div>
+        </div>
+      `;
+
+      $carouselInner.append(slideHtml);
+    });
+  }
+
+  /* ---------- Carousel: Weekend ---------- */
+  $.ajax({
+    url: apiUrl,
+    method: "GET",
+    success: function(response) {
+      const chunkSize = 4;
+      const chunks = [];
+      for (let i = 0; i < response.length; i += chunkSize) {
+        chunks.push(response.slice(i, i + chunkSize));
+      }
+
+      const carouselInner = $("#carousel-inner-weekend");
+      carouselInner.empty();
+
+      chunks.forEach((group, groupIndex) => {
+        const itemDiv = $("<div>").addClass("carousel-item");
+        if (groupIndex === 0) itemDiv.addClass("active");
+
+        const row = $("<div>").addClass("row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4");
+
+        group.forEach((place) => {
+          const col = $("<div>").addClass("col");
+          const card = $("<div>").addClass("card h-100");
+
+          const img = $("<img>")
+            .addClass("card-img-top")
+            .attr("src", place.image)
+            .attr("alt", place.title || "No Title");
+
+          const cardBody = $("<div>").addClass("card-body");
+
+          const title = $("<h5>")
+            .addClass("card-title")
+            .text(place.title || "No Title");
+
+          const ratingDiv = $("<div>").addClass("d-flex align-items-center mb-2");
+          const badge = $("<span>").addClass("badge bg-primary me-2").text(place.rating || "9.0");
+          ratingDiv.append(badge, " Xuất sắc");
+
+          const locationP = $("<p>")
+            .addClass("card-text text-muted")
+            .text(`Địa điểm: ${place.location}`);
+
+          const priceP = $("<p>")
+            .addClass("fw-bold")
+            .text(`US$${place.price}`);
+
+          cardBody.append(title, ratingDiv, locationP, priceP);
+          card.append(img, cardBody);
+          col.append(card);
+          row.append(col);
+        });
+
+        itemDiv.append(row);
+        carouselInner.append(itemDiv);
+      });
+    },
+    error: function(err) {
+      console.error("Lỗi khi gọi API:", err);
+    }
+  });
+
+  /* ---------- User Authentication ---------- */
+  function updateNavbar() {
+  const username = localStorage.getItem('username');
+  const role = localStorage.getItem('role');  // admin hay user
+
+  if (username) {
+    $('#userGreeting').text(`Xin chào, ${username}!`);
+    $('#userGreetingContainer, #logoutContainer').show();
+    $('#loginSignupContainer').hide();
+    if (role === 'admin@gmail.com') {
+      $('#editBtn').show();
+    } else {
+      $('#editBtn').hide();
+    }
+  } else {
+    // Nếu chưa đăng nhập, ẩn luôn nút Edit
+    $('#userGreetingContainer, #logoutContainer, #editBtn').hide();
+    $('#loginSignupContainer').show();
+  }
+}
+
+
+  updateNavbar();
+
+  $('#loginForm').on('submit', function (e) {
+    e.preventDefault();
+    const email = $('#loginEmail').val().trim();
+    const password = $('#loginPassword').val().trim();
+
+    if (email === "admin@gmail.com" && password === "123") {
+      localStorage.setItem('username', "admin@gmail.com");
+      localStorage.setItem('role', 'admin@gmail.com');
+      alert("Đăng nhập với quyền Admin!");
+    } else {
+      if (!email.includes('@')) {
+        alert('Email không hợp lệ.');
+        return;
+      }
+      localStorage.setItem('username', email.split('@')[0]);
+      localStorage.setItem('role', 'user');
+      alert("Đăng nhập thành công (user)!");
+    }
+
+    $('#loginModal').modal('hide');
+    updateNavbar();
+  });
+
+  $('#signupForm').on('submit', function (e) {
+    e.preventDefault();
+    const name = $('#signupName').val();
+    const email = $('#signupEmail').val();
+    const password = $('#signupPassword').val();
+    const confirmPassword = $('#signupConfirmPassword').val();
+    if (password !== confirmPassword) {
+      alert('Mật khẩu xác nhận không khớp!');
+      return;
+    }
+    localStorage.setItem('username', name);
+    $('#signupModal').modal('hide');
+    updateNavbar();
+  });
+
+  $('#logoutBtn').on('click', function () {
+  localStorage.removeItem('username');
+  localStorage.removeItem('role');  // Xóa luôn role
+  updateNavbar();
+});
+
+  /* ---------- Admin Management ---------- */
+  $('#editBtn').on('click', function(){
+    $('#adminModal').modal('show');
+    loadAdminItems();
+  });
+
+  function loadAdminItems(){
+    $.ajax({
+      url: 'https://67c9ea3a102d684575c3f11e.mockapi.io/touris',
+      type: 'GET',
+      success: function(data){
+        let html = '';
+        data.forEach(item => {
+          html += `
+            <tr>
+              <td>${item.name}</td>
+              <td>${item.location}</td>
+              <td>$${item.price}</td>
+              <td><img src="${item.image}" width="60"></td>
+              <td><button class="btn btn-danger btn-sm" onclick="deleteItem(${item.id})">Xóa</button></td>
+            </tr>
+          `;
+        });
+        $('#adminItemList').html(html);
+      },
+      error: function(err){
+        alert("Lỗi khi load item: " + err);
+      }
+    });
+  }
+
+  $('#addItemForm').on('submit', function(e){
+    e.preventDefault();
+    const name = $('#itemName').val().trim();
+    const location = $('#itemLocation').val().trim();
+    const price = parseFloat($('#itemPrice').val());
+    const image = $('#itemImage').val().trim();
+    if(!name || !image){
+      alert("Vui lòng nhập đủ thông tin!");
+      return;
+    }
+
+    $.ajax({
+      url: 'https://67c9ea3a102d684575c3f11e.mockapi.io/touris',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        name: name,
+        location: location,
+        price: price || 0,
+        image: image
+      }),
+      success: function(res){
+        alert("Thêm mới thành công!");
+        loadAdminItems();
+      },
+      error: function(err){
+        alert("Lỗi thêm mới: " + err);
+      }
+    });
+  });
+});
+
+    </script>
+  </body>
 </html>
