@@ -1153,48 +1153,22 @@ $(document).ready(function () {
   let selectedStart = null,
       selectedEnd = null;
 
-  const picker = new Litepicker({
-    element: document.getElementById("calendar"),
-    inlineMode: true,
-    singleMode: false, // Cho phép chọn khoảng ngày
-    format: "DD/MM/YYYY",
-    autoApply: false,  // Tự xử lý nút "Chọn"
-    showButtons: false, // Ẩn nút Cancel/Apply mặc định
-    setup: (picker) => {
-      picker.on("selected", (date1, date2) => {
-        selectedStart = date1;
-        selectedEnd = date2;
-        console.log("Ngày bắt đầu:", date1, "Ngày kết thúc:", date2);
-      });
-    },
-  });
+ const picker = new Litepicker({
+  element: document.getElementById("calendar"),
+  inlineMode: true,
+  singleMode: false
+});
 
-  $("#datePicker").on("click", function (e) {
-    e.stopPropagation();
-    $("#calendarPopup").toggle();
-  });
+$("#datePicker").on("click", function (e) {
+  e.stopPropagation();
+  $("#calendarPopup").toggle();
+});
 
-  $("#clearDates").on("click", function () {
-    selectedStart = null;
-    selectedEnd = null;
-    $("#datePicker").val("");
-    picker.clearSelection();
-  });
-
-  $("#confirmDates").on("click", function () {
-    if (selectedStart && selectedEnd) {
-      $("#datePicker").val(formatDate(selectedStart) + " - " + formatDate(selectedEnd));
-      $("#calendarPopup").hide();
-    } else {
-      alert("Vui lòng chọn ngày nhận và trả phòng.");
-    }
-  });
-
-  $(document).click(function (e) {
-    if (!$(e.target).closest("#calendarPopup, #datePicker").length) {
-      $("#calendarPopup").hide();
-    }
-  });
+$(document).on("click", function (e) {
+  if (!$(e.target).closest("#calendarPopup, #datePicker").length) {
+    $("#calendarPopup").hide();
+  }
+});
 
   /* ---------- Carousel: Homestay ---------- */
   const apiUrl = "https://67c9ea3a102d684575c3f11e.mockapi.io/touris";
